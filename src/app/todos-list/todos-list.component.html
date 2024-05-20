@@ -1,1 +1,11 @@
-<p>todos-list works!</p>
+<div>
+<button routerLink="/new">Create New</button>
+<ul>
+<li *ngFor="let todo of todos">
+{{ todo.id }}: {{ todo.title }} - {{ todo.description }}
+<button routerLink="/edit/{{todo.id}}">
+<i class="fa"></i> Edit
+</button>
+</li>
+</ul>
+</div>
