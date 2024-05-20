@@ -5,12 +5,12 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { TodosListComponent } from './todos-list/todos-list.component';
 import { TodoEditComponent } from './todo-edit/todo-edit.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AuthGuard } from './services/auth.guard';
 
 @NgModule({
   declarations: [AppComponent, TodosListComponent, TodoEditComponent],
-  imports: [BrowserModule, FormsModule, AppRoutingModule],
+  imports: [BrowserModule, FormsModule, AppRoutingModule, ReactiveFormsModule],
   providers: [AuthGuard],
   bootstrap: [AppComponent],
 })

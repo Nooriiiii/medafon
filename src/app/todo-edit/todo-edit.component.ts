@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ToDo } from '../models/todo.model';
 import { TodoService } from '../services/todo.service';
 
 @Component({
@@ -9,27 +9,31 @@ import { TodoService } from '../services/todo.service';
   styleUrls: ['./todo-edit.component.css'],
 })
 export class TodoEditComponent implements OnInit {
-  todo: ToDo = {
-    id: 0,
-    title: '',
-    description: '',
-  };
+  todoForm: FormGroup;
   editMode: boolean = false;
 
   constructor(
+    private fb: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
     private todoService: TodoService
-  ) {}
+  ) {
+    this.todoForm = this.fb.group({
+      id: [0],
+      title: ['', Validators.required],
+      description: [''],
+    });
+  }
 
   ngOnInit() {
     this.route.params.subscribe((params) => {
       const id = +params['id'];
       if (id) {
         this.editMode = true;
-        // Fetch the todo item for editing using the id from the TodoService
-        this.todoService.todos.subscribe((todos) => {
-          this.todo = todos.find((todo) => todo.id === id) || this.todo;
+        this.todoService.getTodoById(id).subscribe((todo) => {
+          if (todo) {
+            this.todoForm.setValue(todo);
+          }
         });
       }
     });
@@ -37,13 +41,10 @@ export class TodoEditComponent implements OnInit {
 
   submitTodo() {
     if (this.editMode) {
-      // Update the existing todo using TodoService
+      this.todoService.updateTodo(this.todoForm.value);
     } else {
-      // Create a new todo using TodoService
-      this.todo.id = Date.now(); // Mock unique ID for the example
-      this.todoService.addTodo(this.todo);
+      this.todoService.addTodo(this.todoForm.value);
     }
-    // Redirect to the TODOs List Page
     this.router.navigate(['/']);
   }
 }

@@ -1,5 +1,6 @@
-<form (ngSubmit)="submitTodo()">
-<input type="text" [(ngModel)]="todo.title" name="title" required minlength="3">
-<textarea [(ngModel)]="todo.description" name="description"></textarea>
+
+<form [formGroup]="todoForm" (ngSubmit)="submitTodo()">
+<input type="text" formControlName="title" required minlength="3">
+<textarea formControlName="description"></textarea>
 <button type="submit">{{ editMode ? 'Update' : 'Create' }}</button>
 </form>
